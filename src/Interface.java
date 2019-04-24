@@ -17,7 +17,7 @@ public class Interface {
 
     private void interfaceMenu() {
         Scanner interfaceInput = new Scanner(System.in);
-        int option = 0;
+        int option;
 
         System.out.println("ALCOLWORTHS SUPERMARKETS PRODUCT DEPOT \n");
         System.out.println("Type a number (1-8) and press Enter to access the following options: \n");
@@ -111,26 +111,11 @@ public class Interface {
         interfaceMenu();
     }
 
-//    private void newProduct(String depot, String n,double p, double w, int q){
-//        String depot1Name = depot1.getName();
-//        String depot2Name = depot2.getName();
-//        if (depot.equals(depot1Name)){
-//            depot1.addProduct(n,p,w,q);
-//            System.out.println("Product " + n + " successfully added. \n");
-//            interfaceMenu();
-//        }
-//        if (depot.equals(depot2Name)) {
-//            depot2.addProduct(n,p,w,q);
-//            System.out.println("Product " + n + " successfully added. \n");
-//            interfaceMenu();
-//        }
-//    }
-
     private void addProductToDepot() {
         Scanner keyboard = new Scanner(System.in);
         String depot1Name = depot1.getName();
         String depot2Name = depot2.getName();
-        String depotNameInput, productName;
+        String depotNameInput, productName, output;
         double price, weight;
         int quantity;
 
@@ -193,13 +178,13 @@ public class Interface {
                 quantity = keyboard.nextInt();
             }
             if (depotNameInput.equals(depot1Name)) {
-                depot1.addProduct(productName, price, weight, quantity);
-                System.out.println("Product " + productName + " successfully added. \n");
+                output = depot1.addProduct(productName, price, weight, quantity);
+                System.out.println(output);
                 interfaceMenu();
             }
             if (depotNameInput.equals(depot2Name)) {
-                depot2.addProduct(productName, price, weight, quantity);
-                System.out.println("Product " + productName + " successfully added. \n");
+                output = depot2.addProduct(productName, price, weight, quantity);
+                System.out.println(output);
                 interfaceMenu();
             }
         }

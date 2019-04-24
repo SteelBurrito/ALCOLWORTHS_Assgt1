@@ -65,21 +65,29 @@ public class Depot {
         int product3Quantity = product3.getQuantity();
         return product3Quantity;
     }
-    public void addProduct(String n,double p, double w, int q){
-//      Create new product in the depot
+
+    public String addProduct(String n, double p, double w, int q) {
+//      Check if there are empty product objects and add a new product if there is one.
+//      If all product objects has a product, return a string
+        String output;
         if (product1 == null) {
             product1 = new Product();
             product1.setProduct(n,p,w,q);
+            return output = "Product " + n + " successfully added";
         }
         else if (product2 == null) {
             product2 = new Product();
             product2.setProduct(n,p,w,q);
-        }
-        else {
+            return output = "Product " + n + " successfully added";
+        } else if (product3 == null) {
             product3 = new Product();
             product3.setProduct(n,p,w,q);
+            return output = "Product " + n + " successfully added";
+        } else {
+            return output = "Unable to add more product as depot already contained 3 products";
         }
     }
+
 
     public String searchExistingProduct(){
         String productName = "";
