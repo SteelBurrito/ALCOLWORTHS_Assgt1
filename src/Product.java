@@ -46,5 +46,9 @@ public class Product {
         quantity += Quantity;
     }
 
+    public void removeAnItem() {
+        quantity--;
+    }
+
     public void incrementQuantity(){ quantity++; }
 }
