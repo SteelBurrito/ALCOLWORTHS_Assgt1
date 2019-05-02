@@ -46,6 +46,12 @@ public class Interface {
             case 4:
                 removeProductFromDepot();
                 break;
+            case 5:
+                listDepots();
+                break;
+            case 6:
+                listProductsInDepot();
+                break;
             default:
                 System.out.println("Please enter a number from 0 to 8.\n");
                 interfaceMenu();
@@ -128,8 +134,8 @@ public class Interface {
         System.out.println("Specify product name: ");
         productName = keyboard.nextLine();
 
-        if(productName.equals(depot1.searchExistingProduct())){
-            System.out.println("Product " + productName + " exists in depot " + depot1Name + " with price $ " + depot1.getProduct1price() + " and weight" + depot1.getProduct1Weight() + ". Adding additional items. \n");
+        if (depot1.searchExistingProduct(productName) != null) {
+            System.out.println(depot1.searchExistingProduct(productName));
             System.out.println("Please enter quantity of product to be added: ");
             quantity = keyboard.nextInt();
             while (quantity <= 0){
@@ -139,9 +145,8 @@ public class Interface {
             depot1.updateProduct(productName,quantity);
             System.out.println("Product " + productName + " updated. \n");
             interfaceMenu();
-        }
-        else if (productName.equals(depot2.searchExistingProduct())) {
-            System.out.println("Product " + productName + " exists in depot " + depot2Name + " with price $ " + depot2.getProduct1price() + " and weight " + depot2.getProduct1Weight() + ". Adding additional items \n");
+        } else if (depot2.searchExistingProduct(productName) != null) {
+            System.out.println(depot2.searchExistingProduct(productName));
             System.out.println("Please enter quantity of product to be added: ");
             quantity = keyboard.nextInt();
             while (quantity <= 0){
@@ -205,7 +210,7 @@ public class Interface {
 
         System.out.println("Specify product name: ");
         productNameInput = keyboard.nextLine();
-        while (!productNameInput.equals(depot1.searchExistingProduct()) && !productNameInput.equals(depot2.searchExistingProduct())) {
+        while (depot1.searchExistingProduct(productNameInput) == null && depot2.searchExistingProduct(productNameInput) == null) {
             System.out.println("Unable to find product on the depots. Please re-enter the product name: ");
             productNameInput = keyboard.nextLine();
         }
@@ -223,6 +228,63 @@ public class Interface {
         } else {
             output = depot2.deleteProduct(productNameInput);
             System.out.println(output);
+            interfaceMenu();
+        }
+    }
+
+    private void listDepots() {
+        if (depot1 == null && depot2 == null) {
+            System.out.println("No depots exist");
+            interfaceMenu();
+        }
+//      List the depot names and the quantity of products stored inside
+        if (depot1 != null)
+            System.out.println("Depot " + depot1.getName() + " has " + depot1.getNumberOfProductsStored() + " products.\n");
+        if (depot2 != null)
+            System.out.println("Depot " + depot2.getName() + " has " + depot2.getNumberOfProductsStored() + " products.\n");
+        interfaceMenu();
+    }
+
+    private void listProductsInDepot() {
+        Scanner keyboard = new Scanner(System.in);
+        String depot1Name = depot1.getName();
+        String depot2Name = depot2.getName();
+        String depotNameInput, output;
+
+//      assign depotname variable something to avoid nullpointerexception later
+        if (depot1Name == null)
+            depot1Name = "empty";
+        if (depot2Name == null)
+            depot2Name = "empty";
+
+        System.out.println("Specify depot name: ");
+        depotNameInput = keyboard.nextLine();
+        if (!depot1Name.equals(depotNameInput) && !depot2Name.equals(depotNameInput)) {
+            System.out.println("Unable to find depot.");
+            interfaceMenu();
+        }
+
+        if (depotNameInput.equals(depot1Name)) {
+            if (depot1.getProduct1() != null)
+                System.out.println(depot1.getProduct1());
+            else if (depot1.getProduct2() != null)
+                System.out.println(depot1.getProduct2());
+            else if (depot1.getProduct3() != null)
+                System.out.println(depot1.getProduct3());
+            else
+                System.out.println("No products in depot \n");
+            interfaceMenu();
+        }
+
+        if (depotNameInput.equals(depot2Name)) {
+            if (depot2.getProduct1() != null)
+                System.out.println(depot2.getProduct1());
+            else if (depot2.getProduct2() != null)
+                System.out.println(depot2.getProduct2());
+            else if (depot2.getProduct3() != null)
+                System.out.println(depot2.getProduct3());
+            else
+                System.out.println("No products in depot \n");
             interfaceMenu();
         }
     }
