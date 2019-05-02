@@ -193,13 +193,37 @@ public class Interface {
     private void removeProductFromDepot(){
         Scanner keyboard = new Scanner(System.in);
 
-        System.out.println("Specify product name: ");
-        String productName = keyboard.nextLine();
-        System.out.println("Specify depot name: ");
-        String depotName = keyboard.nextLine();
-//        if (depotName.equals(depot1.getName())){
-//            if(productName.equals())
-//        }
+        String depot1Name = depot1.getName();
+        String depot2Name = depot2.getName();
+        String productNameInput, depotNameInput, output;
 
+//      assign depotname variable something to avoid nullpointerexception later
+        if (depot1Name == null)
+            depot1Name = "empty";
+        if (depot2Name == null)
+            depot2Name = "empty";
+
+        System.out.println("Specify product name: ");
+        productNameInput = keyboard.nextLine();
+        while (!productNameInput.equals(depot1.searchExistingProduct()) && !productNameInput.equals(depot2.searchExistingProduct())) {
+            System.out.println("Unable to find product on the depots. Please re-enter the product name: ");
+            productNameInput = keyboard.nextLine();
+        }
+        System.out.println("Specify depot name: ");
+        depotNameInput = keyboard.nextLine();
+        while (!depot1Name.equals(depotNameInput) && !depot2Name.equals(depotNameInput)) {
+            System.out.println("Unable to find depot. Please re-enter the product depot:");
+            depotNameInput = keyboard.nextLine();
+        }
+
+        if (depotNameInput.equals(depot1Name)) {
+            output = depot1.deleteProduct(productNameInput);
+            System.out.println(output);
+            interfaceMenu();
+        } else {
+            output = depot2.deleteProduct(productNameInput);
+            System.out.println(output);
+            interfaceMenu();
+        }
     }
 }

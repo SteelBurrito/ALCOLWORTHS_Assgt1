@@ -90,7 +90,7 @@ public class Depot {
 
 
     public String searchExistingProduct(){
-        String productName = "";
+        String productName = "empty";
         if (product1 != null){
             productName = product1.getName();
             return productName;
@@ -121,19 +121,29 @@ public class Depot {
        }
     }
 
-    public void deleteProduct(String n) {
-        if (n.equals(product1.getName()))
+    public String deleteProduct(String n) {
+//      checks if product exists and if it does removeAnItem() will decrement Product quantity.
+//      once removeAnItem() is ran if Product quantity is zero the Product instance is deleted.
+        String output = n;
+        if (n.equals(product1.getName())) {
             product1.removeAnItem();
-        if (product1.getQuantity() <= 0)
-            product1 = null;
-        else if (n.equals(product2.getName()))
+            if (product1.getQuantity() == 0)
+                product1 = null;
+            return output = "One item of Product " + n + " removed from depot " + name;
+        }
+        if (n.equals(product2.getName())) {
             product2.removeAnItem();
-        if (product2.getQuantity() <= 0)
-            product2 = null;
-        else
+            if (product2.getQuantity() == 0)
+                product2 = null;
+            return output = "One item of Product " + n + " removed from depot " + name;
+        }
+        if (n.equals(product3.getName())) {
             product3.removeAnItem();
-        if (product3.getQuantity() <= 0)
-            product3 = null;
+            if (product3.getQuantity() == 0)
+                product3 = null;
+            return output = "One item of Product " + n + " removed from depot " + name;
+        }
+        return output;
     }
 
     //add other methods
