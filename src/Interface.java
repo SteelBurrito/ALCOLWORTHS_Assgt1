@@ -52,6 +52,9 @@ public class Interface {
             case 6:
                 listProductsInDepot();
                 break;
+            case 7:
+                searchProductInDepot();
+                break;
             default:
                 System.out.println("Please enter a number from 0 to 8.\n");
                 interfaceMenu();
@@ -134,8 +137,8 @@ public class Interface {
         System.out.println("Specify product name: ");
         productName = keyboard.nextLine();
 
-        if (depot1.searchExistingProduct(productName) != null) {
-            System.out.println(depot1.searchExistingProduct(productName));
+        if (!depot1.searchExistingProduct(productName).equals("not found")) {
+            System.out.println(depot1.searchExistingProduct(productName) + " Adding additional items. \n");
             System.out.println("Please enter quantity of product to be added: ");
             quantity = keyboard.nextInt();
             while (quantity <= 0){
@@ -145,8 +148,8 @@ public class Interface {
             depot1.updateProduct(productName,quantity);
             System.out.println("Product " + productName + " updated. \n");
             interfaceMenu();
-        } else if (depot2.searchExistingProduct(productName) != null) {
-            System.out.println(depot2.searchExistingProduct(productName));
+        } else if (!depot2.searchExistingProduct(productName).equals("not found")) {
+            System.out.println(depot2.searchExistingProduct(productName) + " Adding additional items. \n");
             System.out.println("Please enter quantity of product to be added: ");
             quantity = keyboard.nextInt();
             while (quantity <= 0){
@@ -249,7 +252,7 @@ public class Interface {
         Scanner keyboard = new Scanner(System.in);
         String depot1Name = depot1.getName();
         String depot2Name = depot2.getName();
-        String depotNameInput, output;
+        String depotNameInput;
 
 //      assign depotname variable something to avoid nullpointerexception later
         if (depot1Name == null)
@@ -285,6 +288,25 @@ public class Interface {
                 System.out.println(depot2.getProduct3());
             else
                 System.out.println("No products in depot \n");
+            interfaceMenu();
+        }
+    }
+
+    private void searchProductInDepot() {
+        Scanner keyboard = new Scanner(System.in);
+        String productNameInput;
+
+        System.out.println("Specify the product name: ");
+        productNameInput = keyboard.nextLine();
+
+        if (depot1.searchExistingProduct(productNameInput) == null && depot2.searchExistingProduct(productNameInput) == null) {
+            System.out.println("No product found in any depot.");
+            interfaceMenu();
+        } else if (depot1.searchExistingProduct(productNameInput) != null) {
+            System.out.println(depot1.searchExistingProduct(productNameInput));
+            interfaceMenu();
+        } else {
+            System.out.println(depot2.searchExistingProduct(productNameInput));
             interfaceMenu();
         }
     }

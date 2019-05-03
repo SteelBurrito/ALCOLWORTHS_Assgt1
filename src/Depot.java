@@ -7,63 +7,51 @@ public class Depot {
     }
 
     private String getProduct1NameInDepot() {
-        String product1Name = product1.getName();
-        return product1Name;
+        return product1.getName();
     }
 
     private String getProduct2NameInDepot() {
-        String product2Name = product2.getName();
-        return product2Name;
+        return product2.getName();
     }
 
     private String getProduct3NameInDepot() {
-        String product3Name = product3.getName();
-        return product3Name;
+        return product3.getName();
     }
 
-    public double getProduct1price(){
-        double product1Price = product1.getPrice();
-        return  product1Price;
+    private double getProduct1price() {
+        return product1.getPrice();
     }
 
     private double getProduct2price() {
-        double product2Price = product2.getPrice();
-        return  product2Price;
+        return product2.getPrice();
     }
 
     private double getProduct3price() {
-        double product3Price = product3.getPrice();
-        return  product3Price;
+        return product3.getPrice();
     }
 
-    public double getProduct1Weight(){
-        double product1Weight = product1.getWeight();
-        return product1Weight;
+    private double getProduct1Weight() {
+        return product1.getWeight();
     }
 
     private double getProduct2Weight() {
-        double product2Weight = product2.getWeight();
-        return product2Weight;
+        return product2.getWeight();
     }
 
     private double getProduct3Weight() {
-        double product3Weight = product3.getWeight();
-        return product3Weight;
+        return product3.getWeight();
     }
 
     private int getProduct1Quantity() {
-        int product1Quantity = product1.getQuantity();
-        return product1Quantity;
+        return product1.getQuantity();
     }
 
     private int getProduct2Quantity() {
-        int product2Quantity = product2.getQuantity();
-        return product2Quantity;
+        return product2.getQuantity();
     }
 
     private int getProduct3Quantity() {
-        int product3Quantity = product3.getQuantity();
-        return product3Quantity;
+        return product3.getQuantity();
     }
 
     public String addProduct(String n, double p, double w, int q) {
@@ -90,16 +78,34 @@ public class Depot {
 
 
     public String searchExistingProduct(String n) {
-        if (n.equals(product1.getName())) {
-            return ("Product " + product1.getName() + " exists in depot " + name + " with price $ " + product1.getPrice() + " and weight" + product1.getWeight() + ". Adding additional items. \n");
+        String p1, p2, p3;
+
+//      assigning the product.getname() to a variable to avoid nullpointerexception
+        if (product1 == null)
+            p1 = "empty";
+        else
+            p1 = product1.getName();
+
+        if (product2 == null)
+            p2 = "empty";
+        else
+            p2 = product2.getName();
+
+        if (product3 == null)
+            p3 = "empty";
+        else
+            p3 = product3.getName();
+
+        if (n.equals(p1)) {
+            return ("Product " + p1 + " exists in depot " + name + " with price $" + product1.getPrice() + ", weight " + product1.getWeight() + " and quantity " + product1.getQuantity());
         }
-        if (n.equals(product2.getName())) {
-            return ("Product " + product2.getName() + " exists in depot " + name + " with price $ " + product2.getPrice() + " and weight" + product2.getWeight() + ". Adding additional items. \n");
+        if (n.equals(p2)) {
+            return ("Product " + p2 + " exists in depot " + name + " with price $" + product2.getPrice() + ", weight " + product2.getWeight() + " and quantity " + product2.getQuantity());
         }
-        if (n.equals(product3.getName())) {
-            return ("Product " + product3.getName() + " exists in depot " + name + " with price $ " + product3.getPrice() + " and weight" + product3.getWeight() + ". Adding additional items. \n");
+        if (n.equals(p3)) {
+            return ("Product " + p3 + " exists in depot " + name + " with price $" + product3.getPrice() + ", weight " + product3.getWeight() + " and quantity " + product3.getQuantity());
         }
-        return null;
+        return ("not found");
     }
 
     public void updateProduct(String productNameInput, int q){
