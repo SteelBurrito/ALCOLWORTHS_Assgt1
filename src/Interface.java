@@ -55,6 +55,9 @@ public class Interface {
             case 7:
                 searchProductInDepot();
                 break;
+            case 8:
+                cumulativeValueInDepot();
+                break;
             default:
                 System.out.println("Please enter a number from 0 to 8.\n");
                 interfaceMenu();
@@ -213,7 +216,7 @@ public class Interface {
 
         System.out.println("Specify product name: ");
         productNameInput = keyboard.nextLine();
-        while (depot1.searchExistingProduct(productNameInput) == null && depot2.searchExistingProduct(productNameInput) == null) {
+        while (depot1.searchExistingProduct(productNameInput).equals("not found") && depot2.searchExistingProduct(productNameInput).equals("not found")) {
             System.out.println("Unable to find product on the depots. Please re-enter the product name: ");
             productNameInput = keyboard.nextLine();
         }
@@ -299,14 +302,42 @@ public class Interface {
         System.out.println("Specify the product name: ");
         productNameInput = keyboard.nextLine();
 
-        if (depot1.searchExistingProduct(productNameInput) == null && depot2.searchExistingProduct(productNameInput) == null) {
+        if (depot1.searchExistingProduct(productNameInput).equals("not found") && depot2.searchExistingProduct(productNameInput).equals("not found")) {
             System.out.println("No product found in any depot.");
             interfaceMenu();
-        } else if (depot1.searchExistingProduct(productNameInput) != null) {
+        } else if (!depot1.searchExistingProduct(productNameInput).equals("not found")) {
             System.out.println(depot1.searchExistingProduct(productNameInput));
             interfaceMenu();
         } else {
             System.out.println(depot2.searchExistingProduct(productNameInput));
+            interfaceMenu();
+        }
+    }
+
+    private void cumulativeValueInDepot() {
+        Scanner keyboard = new Scanner(System.in);
+        String depot1Name = depot1.getName();
+        String depot2Name = depot2.getName();
+        String depotNameInput;
+
+//      assign depotname variable something to avoid nullpointerexception later
+        if (depot1Name == null)
+            depot1Name = "empty";
+        if (depot2Name == null)
+            depot2Name = "empty";
+
+        System.out.println("Specify depot name: ");
+        depotNameInput = keyboard.nextLine();
+        if (!depot1Name.equals(depotNameInput) && !depot2Name.equals(depotNameInput)) {
+            System.out.println("Unable to find depot.");
+            interfaceMenu();
+        }
+
+        if (depotNameInput.equals(depot1Name)) {
+            System.out.println("Depot " + depot1Name + " has cumulative product value $" + depot1.depotValue());
+            interfaceMenu();
+        } else {
+            System.out.println("Depot " + depot2Name + " has cumulative product value $" + depot2.depotValue());
             interfaceMenu();
         }
     }

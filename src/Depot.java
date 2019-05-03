@@ -97,13 +97,13 @@ public class Depot {
             p3 = product3.getName();
 
         if (n.equals(p1)) {
-            return ("Product " + p1 + " exists in depot " + name + " with price $" + product1.getPrice() + ", weight " + product1.getWeight() + " and quantity " + product1.getQuantity());
+            return ("Product " + p1 + " exists in depot " + name + " with price $" + getProduct1price() + ", weight " + getProduct1Weight() + " and quantity " + getProduct1Quantity());
         }
         if (n.equals(p2)) {
-            return ("Product " + p2 + " exists in depot " + name + " with price $" + product2.getPrice() + ", weight " + product2.getWeight() + " and quantity " + product2.getQuantity());
+            return ("Product " + p2 + " exists in depot " + name + " with price $" + getProduct2price() + ", weight " + getProduct2Weight() + " and quantity " + getProduct3Quantity());
         }
         if (n.equals(p3)) {
-            return ("Product " + p3 + " exists in depot " + name + " with price $" + product3.getPrice() + ", weight " + product3.getWeight() + " and quantity " + product3.getQuantity());
+            return ("Product " + p3 + " exists in depot " + name + " with price $" + getProduct2price() + ", weight " + getProduct2Weight() + " and quantity " + getProduct3Quantity());
         }
         return ("not found");
     }
@@ -175,6 +175,17 @@ public class Depot {
         if (product3 != null)
             return ("Product " + getProduct3NameInDepot() + " has price $" + getProduct3price() + " weight " + getProduct3Weight() + "kg, and quantity " + getProduct3Quantity() + "\n");
         return null;
+    }
+
+    public double depotValue() {
+        double totalValue = 0;
+        if (product1 != null)
+            totalValue += (getProduct1price() * getProduct1Quantity());
+        if (product2 != null)
+            totalValue += (getProduct2price() * getProduct2Quantity());
+        if (product3 != null)
+            totalValue += (getProduct3price() * getProduct3Quantity());
+        return totalValue;
     }
 
     //add other methods
