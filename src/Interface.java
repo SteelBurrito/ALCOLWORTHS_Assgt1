@@ -3,6 +3,7 @@ import java.util.*;
 public class Interface {
     private Depot depot1;
     private Depot depot2;
+    private Depot[] depotArr = new Depot[4];
 
     public static void main(String[] args) {
         Interface intFace = new Interface();
@@ -10,6 +11,9 @@ public class Interface {
     }
 
     private void run() {
+        for (int i = 0; i < depotArr.length; i++)
+            depotArr[i] = new Depot();
+
         depot1 = new Depot();
         depot2 = new Depot();
         interfaceMenu();
@@ -35,10 +39,10 @@ public class Interface {
             case 0:
                 System.exit(0);
             case 1:
-                addDepot();
+                addDepotArr();
                 break;
             case 2:
-                deleteDepot();
+                deleteDepotArr();
                 break;
             case 3:
                 addProductToDepot();
@@ -65,61 +69,45 @@ public class Interface {
         interfaceInput.close();
     }
 
-    //  Creates new instances of Depot
-    private void addDepot() {
+    private void addDepotArr() {
         Scanner keyboard = new Scanner(System.in);
-        String depot1Name = depot1.getName();
-        String depot2Name = depot2.getName();
         String depotNameInput;
 
-//      Check if any there are any empty depot slots
-        if (depot1Name == null) {
-            System.out.println("Enter name for depot 1:  ");
-            depotNameInput = keyboard.nextLine();
-//          Check for existing depot names
-            if (depotNameInput.equals(depot2Name)) {
-                System.out.println("Depot Already exist.\n");
+        System.out.println("Enter name for new depot: ");
+        depotNameInput = keyboard.nextLine();
+        for (int i = 0; i < depotArr.length; i++) {
+            if (depotArr[i].getName() == null) {
+                depotArr[i].setName(depotNameInput);
+
+                System.out.println("Depot " + i + " name is " + depotNameInput + "\n");
                 interfaceMenu();
             }
-            depot1.setName(depotNameInput);
-            System.out.println("Depot 1 name is " + depotNameInput + "\n");
-            interfaceMenu();
-        } else if (depot2Name == null) {
-            System.out.println("Enter name for depot 2:  ");
-            depotNameInput = keyboard.nextLine();
-//          Check for existing depot names
-            if (depotNameInput.equals(depot1Name)) {
-                System.out.println("Depot already exist.\n");
+            if (depotArr[i].getName().equals(depotNameInput)) {
+                System.out.println("Depot with name " + depotNameInput + " already exists");
                 interfaceMenu();
             }
-            depot2.setName(depotNameInput);
-            System.out.println("Depot 2 name is " + depotNameInput + "\n");
-            interfaceMenu();
-        } else {
-            System.out.println("Unable to add more depot as there can only be 2 depots.");
-            interfaceMenu();
         }
-        keyboard.close();
+        System.out.println("Depot slot is full. Unable to add more than 4 depots \n");
+        interfaceMenu();
     }
 
-    private void deleteDepot() {
+    private void deleteDepotArr() {
         Scanner keyboard = new Scanner(System.in);
-
         String deleteInput;
-        String depot1Name = depot1.getName();
-        String depot2Name = depot2.getName();
 
         System.out.println("Enter name of depot to be removed: ");
         deleteInput = keyboard.nextLine();
 
-        if (deleteInput.equals(depot1Name)) {
-            depot1 = null;
-            keyboard.close();
-        } else if (deleteInput.equals(depot2Name)) {
-            depot2 = null;
-            keyboard.close();
-        } else
-            System.out.println("Unable to find the depot entered.");
+        for (int i = 0; i < depotArr.length; i++) {
+            if (depotArr[i].getName() != null) {
+                if (depotArr[i].getName().equals(deleteInput)) {
+                    depotArr[i] = null;
+                    System.out.println("Depot " + deleteInput + " removed.\n");
+                    interfaceMenu();
+                }
+            }
+        }
+        System.out.println("Unable to find the depot entered.");
         interfaceMenu();
     }
 
@@ -244,9 +232,9 @@ public class Interface {
             interfaceMenu();
         }
 //      List the depot names and the quantity of products stored inside
-        if (depot1 != null)
+        if (depot1.getName() != null)
             System.out.println("Depot " + depot1.getName() + " has " + depot1.getNumberOfProductsStored() + " products.\n");
-        if (depot2 != null)
+        if (depot2.getName() != null)
             System.out.println("Depot " + depot2.getName() + " has " + depot2.getNumberOfProductsStored() + " products.\n");
         interfaceMenu();
     }
