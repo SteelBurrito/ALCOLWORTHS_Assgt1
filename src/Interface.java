@@ -11,8 +11,10 @@ public class Interface {
     }
 
     private void run() {
-        for (int i = 0; i < depotArr.length; i++)
+        for (int i = 0; i < depotArr.length; i++) {
             depotArr[i] = new Depot();
+            depotArr[i].initializeProductArr();
+        }
 
         depot1 = new Depot();
         depot2 = new Depot();
@@ -45,7 +47,7 @@ public class Interface {
                 deleteDepotArr();
                 break;
             case 3:
-                addProductToDepot();
+                addProductToDepotArr();
                 break;
             case 4:
                 removeProductFromDepot();
@@ -111,82 +113,71 @@ public class Interface {
         interfaceMenu();
     }
 
-    private void addProductToDepot() {
+    private void addProductToDepotArr() {
         Scanner keyboard = new Scanner(System.in);
-        String depot1Name = depot1.getName();
-        String depot2Name = depot2.getName();
         String depotNameInput, productName, output;
         double price, weight;
         int quantity;
 
-//      assign depotname variable something to avoid nullpointerexception later
-        if (depot1Name == null)
-            depot1Name = "empty";
-        if (depot2Name == null)
-            depot2Name = "empty";
-
         System.out.println("Specify product name: ");
         productName = keyboard.nextLine();
 
-        if (!depot1.searchExistingProduct(productName).equals("not found")) {
-            System.out.println(depot1.searchExistingProduct(productName) + " Adding additional items. \n");
-            System.out.println("Please enter quantity of product to be added: ");
-            quantity = keyboard.nextInt();
-            while (quantity <= 0){
-                System.out.println("Quantity cannot be less than equal to zero. Please re-enter product quantity:");
-                quantity = keyboard.nextInt();
-            }
-            depot1.updateProduct(productName,quantity);
-            System.out.println("Product " + productName + " updated. \n");
-            interfaceMenu();
-        } else if (!depot2.searchExistingProduct(productName).equals("not found")) {
-            System.out.println(depot2.searchExistingProduct(productName) + " Adding additional items. \n");
-            System.out.println("Please enter quantity of product to be added: ");
-            quantity = keyboard.nextInt();
-            while (quantity <= 0){
-                System.out.println("Quantity cannot be less than equal to zero. Please re-enter product quantity:");
-                quantity = keyboard.nextInt();
-            }
-            depot2.updateProduct(productName,quantity);
-            System.out.println("Product " + productName + " updated. \n");
-            interfaceMenu();
-        }
-        else {
-            System.out.println("Which depot will this product be entered?: ");
-            depotNameInput = keyboard.nextLine();
-            while (!depot1Name.equals(depotNameInput) && !depot2Name.equals(depotNameInput)) {
-                System.out.println("Unable to find depot. Please re-enter the product depot:");
-                depotNameInput = keyboard.nextLine();
-            }
-            System.out.println("Specify price: ");
-            price = keyboard.nextDouble();
-            while( price <= 0 ) {
-                System.out.println("Price cannot be less than or equal to zero. Please re-enter product price:");
-                price = keyboard.nextDouble();
-            }
-            System.out.println("Specify  its weight: ");
-            weight = keyboard.nextDouble();
-            while (weight <= 0) {
-                System.out.println("Weight cannot be less than or equal to zero. Please re-enter product weight:");
-                weight = keyboard.nextDouble();
-            }
-            System.out.println("Specify the quantity in the inventory: ");
-            quantity = keyboard.nextInt();
-            while (quantity <= 0){
-                System.out.println("Quantity cannot be less than equal to zero. Please re-enter product quantity:");
-                quantity = keyboard.nextInt();
-            }
-            if (depotNameInput.equals(depot1Name)) {
-                output = depot1.addProduct(productName, price, weight, quantity);
-                System.out.println(output);
-                interfaceMenu();
-            }
-            if (depotNameInput.equals(depot2Name)) {
-                output = depot2.addProduct(productName, price, weight, quantity);
-                System.out.println(output);
-                interfaceMenu();
+//      check for existing product in depot array
+        for (int i = 0; i < depotArr.length; i++) {
+            if (depotArr[i].getName() != null) {
+//              depot found an existing product with the same name
+                if (!depotArr[i].searchExistingProductArr(productName).equals("not found")) {
+                    System.out.println(depotArr[i].searchExistingProductArr(productName) + " adding additional items.\n");
+                    System.out.println("Please enter quantity of product to be added: ");
+                    quantity = keyboard.nextInt();
+                    while (quantity <= 0) {
+                        System.out.println("Quantity cannot be less than equal to zero. Please re-enter product quantity:");
+                        quantity = keyboard.nextInt();
+                    }
+                    depotArr[i].updateProductQuantity(productName, quantity);
+                    System.out.println("Product " + productName + " updated. \n");
+                    interfaceMenu();
+                }
             }
         }
+
+//      insert new product on depot
+        System.out.println("Which depot this product will be inserted? :");
+        depotNameInput = keyboard.nextLine();
+
+        for (int i = 0; i < depotArr.length; i++) {
+            if (depotArr[i].getName() != null) {
+                if (depotArr[i].getName().equals(depotNameInput)) {
+                    System.out.println("Specify price: ");
+                    price = keyboard.nextDouble();
+                    while (price <= 0) {
+                        System.out.println("Price cannot be less than or equal to zero. Please re-enter product price:");
+                        price = keyboard.nextDouble();
+                    }
+                    System.out.println("Specify  its weight: ");
+                    weight = keyboard.nextDouble();
+                    while (weight <= 0) {
+                        System.out.println("Weight cannot be less than or equal to zero. Please re-enter product weight:");
+                        weight = keyboard.nextDouble();
+                    }
+                    System.out.println("Specify the quantity in the inventory: ");
+                    quantity = keyboard.nextInt();
+                    while (quantity <= 0) {
+                        System.out.println("Quantity cannot be less than equal to zero. Please re-enter product quantity:");
+                        quantity = keyboard.nextInt();
+                    }
+                    output = depotArr[i].addProductArr(productName, price, weight, quantity);
+                    System.out.println(output);
+                    interfaceMenu();
+                }
+            }
+        }
+        System.out.println("Unable to find requested depot. Returning to main menu. \n");
+        interfaceMenu();
+    }
+
+    private void removeProductFromDepotArr() {
+        Scanner keyboard = new Scanner(System.in);
     }
 
     private void removeProductFromDepot(){

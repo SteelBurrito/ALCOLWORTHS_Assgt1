@@ -1,6 +1,7 @@
 public class Depot {
     private String name;
     private Product product1, product2, product3;
+    private Product productArr[] = new Product[5];
 
     public String getName(){
         return name;
@@ -54,6 +55,12 @@ public class Depot {
         return product3.getQuantity();
     }
 
+    public void initializeProductArr() {
+        for (int i = 0; i < productArr.length; i++) {
+            productArr[i] = new Product();
+        }
+    }
+
     public String addProduct(String n, double p, double w, int q) {
 //      Check if there are empty product objects and add a new product if there is one.
 //      If all product objects has a product, return a string
@@ -74,6 +81,17 @@ public class Depot {
         } else {
             return output = "Unable to add more product as depot already contained 3 products";
         }
+    }
+
+    public String addProductArr(String n, double p, double w, int q) {
+        for (int i = 0; i < productArr.length; i++) {
+            if (productArr[i].getName() == null) {
+//                productArr[i] = new Product();
+                productArr[i].setProduct(n, p, w, q);
+                return ("Product " + n + " successfully added \n");
+            }
+        }
+        return ("Unable to add more product as depot already contained 5 products");
     }
 
 
@@ -108,6 +126,16 @@ public class Depot {
         return ("not found");
     }
 
+    public String searchExistingProductArr(String n) {
+        for (int i = 0; i < productArr.length; i++) {
+            if (productArr[i].getName() != null) {
+                if (productArr[i].getName().equals(n))
+                    return ("Product " + productArr[i].getName() + " exists in depot " + name + ", slot " + i);
+            }
+        }
+        return ("not found");
+    }
+
     public void updateProduct(String productNameInput, int q){
        String productOne = getProduct1NameInDepot();
        String productTwo = getProduct2NameInDepot();
@@ -121,6 +149,14 @@ public class Depot {
        if (productNameInput.equals(productThree)){
             product3.setQuantity(q);
        }
+    }
+
+    public void updateProductQuantity(String productNameInput, int q) {
+        for (int i = 0; i < productArr.length; i++) {
+            if (productArr[i].getName().equals(productNameInput)) {
+                productArr[i].setQuantity(q);
+            }
+        }
     }
 
     public String deleteProduct(String n) {
