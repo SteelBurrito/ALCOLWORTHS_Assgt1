@@ -130,7 +130,7 @@ public class Depot {
         for (int i = 0; i < productArr.length; i++) {
             if (productArr[i].getName() != null) {
                 if (productArr[i].getName().equals(n))
-                    return ("Product " + productArr[i].getName() + " exists in depot " + name + ", slot " + i);
+                    return ("Product " + productArr[i].getName() + " exists in depot " + name + ", slot " + i + " of " + productArr.length);
             }
         }
         return ("not found");
@@ -151,12 +151,16 @@ public class Depot {
        }
     }
 
-    public void updateProductQuantity(String productNameInput, int q) {
+    public String updateProductQuantity(String productNameInput, int q) {
         for (int i = 0; i < productArr.length; i++) {
             if (productArr[i].getName().equals(productNameInput)) {
-                productArr[i].setQuantity(q);
+                productArr[i].decreaseQuantity(q);
+                if (productArr[i].getQuantity() == 0)
+                    productArr[i] = null;
+                return (q + " item(s) of product " + productNameInput + " removed from depot " + name);
             }
         }
+        return ("no product is removed");
     }
 
     public String deleteProduct(String n) {

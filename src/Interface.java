@@ -50,7 +50,7 @@ public class Interface {
                 addProductToDepotArr();
                 break;
             case 4:
-                removeProductFromDepot();
+                removeProductFromDepotArr();
                 break;
             case 5:
                 listDepots();
@@ -178,42 +178,45 @@ public class Interface {
 
     private void removeProductFromDepotArr() {
         Scanner keyboard = new Scanner(System.in);
-    }
-
-    private void removeProductFromDepot(){
-        Scanner keyboard = new Scanner(System.in);
-
-        String depot1Name = depot1.getName();
-        String depot2Name = depot2.getName();
-        String productNameInput, depotNameInput, output;
-
-//      assign depotname variable something to avoid nullpointerexception later
-        if (depot1Name == null)
-            depot1Name = "empty";
-        if (depot2Name == null)
-            depot2Name = "empty";
+        String productName, depotNameInput, output;
+        int quantityRemoved;
 
         System.out.println("Specify product name: ");
-        productNameInput = keyboard.nextLine();
-        while (depot1.searchExistingProduct(productNameInput).equals("not found") && depot2.searchExistingProduct(productNameInput).equals("not found")) {
-            System.out.println("Unable to find product on the depots. Please re-enter the product name: ");
-            productNameInput = keyboard.nextLine();
+        productName = keyboard.nextLine();
+
+        int noProductFound = 0;
+        for (int i = 0; i < depotArr.length; i++) {
+            if (depotArr[i].getName() != null) {
+                if (depotArr[i].searchExistingProductArr(productName).equals("not found")) {
+                    noProductFound++;
+                }
+            }
         }
-        System.out.println("Specify depot name: ");
-        depotNameInput = keyboard.nextLine();
-        while (!depot1Name.equals(depotNameInput) && !depot2Name.equals(depotNameInput)) {
-            System.out.println("Unable to find depot. Please re-enter the product depot:");
-            depotNameInput = keyboard.nextLine();
+        if (noProductFound == depotArr.length) {
+            System.out.println("Unable to find the product specified. Returning to main menu...");
+            interfaceMenu();
         }
 
-        if (depotNameInput.equals(depot1Name)) {
-            output = depot1.deleteProduct(productNameInput);
-            System.out.println(output);
-            interfaceMenu();
-        } else {
-            output = depot2.deleteProduct(productNameInput);
-            System.out.println(output);
-            interfaceMenu();
+        System.out.println("Specify the depot name: ");
+        depotNameInput = keyboard.nextLine();
+
+        for (int y = 0; y < depotArr.length; y++) {
+            if (depotArr[y].getName() != null) {
+                if (depotArr[y].getName().equals(depotNameInput)) {
+                    System.out.println("Specify quantity of product to be removed: ");
+                    quantityRemoved = keyboard.nextInt();
+                    while (quantityRemoved <= 0) {
+                        System.out.println("Quantity cannot be less than or equal to zero. Please re-enter the quantity: ");
+                        quantityRemoved = keyboard.nextInt();
+                    }
+                    output = depotArr[y].updateProductQuantity(productName, quantityRemoved);
+                    System.out.println(output);
+                    interfaceMenu();
+                } else {
+                    System.out.println("Unable to find the depot specified. Returning to main menu...");
+                    interfaceMenu();
+                }
+            }
         }
     }
 

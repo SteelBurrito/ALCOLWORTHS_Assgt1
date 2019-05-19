@@ -46,6 +46,9 @@ public class Product {
         quantity += Quantity;
     }
 
+    public void decreaseQuantity(int q) {
+        quantity -= q;
+    }
     public void removeAnItem() {
         quantity--;
     }
