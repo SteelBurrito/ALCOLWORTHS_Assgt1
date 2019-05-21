@@ -1,3 +1,6 @@
+// Name: Antonio Kevin Christophorus
+// ID: 3201094
+
 public class Product {
     private String name;
     private double price;
@@ -12,6 +15,7 @@ public class Product {
     public Double getPrice(){
         return price;
     }
+
     public Double getWeight(){
         return weight;
     }
@@ -20,24 +24,11 @@ public class Product {
         return quantity;
     }
 
-    public void setProduct(String n,double p, double w, int q){
+    public void setProduct(String n, double p, double w, int q){
         name = n;
         price = p;
         weight = w;
         quantity = q;
-    }
-
-    //add other methods
-    public void setName(String Name){
-        name = Name;
-    }
-
-    public void setPrice(double Price){
-        price = Price;
-    }
-
-    public  void setWeight (double Weight){
-        weight = Weight;
     }
 
     public void setQuantity (int Quantity) {
@@ -49,9 +40,4 @@ public class Product {
     public void decreaseQuantity(int q) {
         quantity -= q;
     }
-    public void removeAnItem() {
-        quantity--;
-    }
-
-    public void incrementQuantity(){ quantity++; }
 }
