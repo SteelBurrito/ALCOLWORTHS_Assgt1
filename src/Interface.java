@@ -2,6 +2,8 @@
 // ID: 3201094
 
 import java.util.*;
+import java.io.PrintWriter;
+import java.io.FileNotFoundException;
 
 public class Interface {
     private Depot[] depotArr = new Depot[4];
@@ -25,14 +27,15 @@ public class Interface {
 
         System.out.println("ALCOLWORTHS SUPERMARKETS PRODUCT DEPOT \n");
         System.out.println("Type a number (1-8) and press Enter to access the following options: \n");
-        System.out.println("To add a depot, press 1  \n");
-        System.out.println("To remove a depot, press 2 \n");
-        System.out.println("To add a product to a depot, press 3 \n");
-        System.out.println("To remove an item of a product from a depot, press 4 \n");
-        System.out.println("To list the depots, press 5 \n");
-        System.out.println("To list the products in a depot, press 6 \n");
-        System.out.println("To search for a product in the depots, press 7 \n");
-        System.out.println("To sum up the values of all products inside a depot, press 8 \n");
+        System.out.println("To add a depot, enter 1  \n");
+        System.out.println("To remove a depot, enter 2 \n");
+        System.out.println("To add a product to a depot, enter 3 \n");
+        System.out.println("To remove an item of a product from a depot, enter 4 \n");
+        System.out.println("To list the depots, enter 5 \n");
+        System.out.println("To list the products in a depot, enter 6 \n");
+        System.out.println("To search for a product in the depots, enter 7 \n");
+        System.out.println("To sum up the values of all products inside a depot, enter 8 \n");
+        System.out.println("To export the depot information, enter 9 \n");
         System.out.println("To exit the program, press 0 \n");
         option = interfaceInput.nextInt();
         switch (option) {
@@ -61,6 +64,9 @@ public class Interface {
                 break;
             case 8:
                 cumulativeValueInDepotArr();
+                break;
+            case 9:
+                exportDepotsArr();
                 break;
             default:
                 System.out.println("Please enter a number from 0 to 8.\n");
@@ -125,7 +131,7 @@ public class Interface {
             if (depotArr[i].getName() != null) {
 //              depot found an existing product with the same name
                 if (!depotArr[i].searchExistingProductArr(productName).equals("not found")) {
-                    System.out.println(depotArr[i].searchExistingProductArr(productName) + " adding additional items.\n");
+                    System.out.println(depotArr[i].searchExistingProductArr(productName) + ", adding additional items.\n");
                     System.out.println("Please enter quantity of product to be added: ");
                     quantity = keyboard.nextInt();
                     while (quantity <= 0) {
@@ -269,12 +275,10 @@ public class Interface {
                 }
             }
         }
-
 //      product not found
         System.out.println("Product specified does not exist in depot. Returning to main menu...");
         interfaceMenu();
     }
-
 
     private void cumulativeValueInDepotArr() {
         Scanner keyboard = new Scanner(System.in);
@@ -292,9 +296,44 @@ public class Interface {
                 }
             }
         }
-
 //      depot not found
         System.out.println("Unable to find specified depot. Returning to main menu...");
+        interfaceMenu();
+    }
+
+    private void exportDepotsArr() {
+        String fileName = "depots.txt";
+        PrintWriter outputStream = null;
+
+        try {
+            outputStream = new PrintWriter(fileName);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error opening " + fileName);
+            System.exit(0);
+        }
+
+        for (int i = 0; i < depotArr.length; i++) {
+            if (depotArr[i].getName() != null) {
+                String[] products = depotArr[i].exportDepot();
+                String line;
+
+//              if first index of array products is null, prints the depot name and move on to next iteration
+                if (products[i] == null) {
+                    line = depotArr[i].getName();
+                    outputStream.println(line);
+                    continue;
+                }
+//              prints each item inside product array if the item is not empty
+                for (String product : products) {
+                    if (product != null) {
+                        line = product;
+                        outputStream.println(line);
+                    }
+                }
+            }
+        }
+        outputStream.close();
+        System.out.println("Depot data exported into " + fileName);
         interfaceMenu();
     }
 }

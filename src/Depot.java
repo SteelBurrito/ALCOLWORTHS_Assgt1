@@ -3,7 +3,7 @@
 
 public class Depot {
     private String name;
-    private Product productArr[] = new Product[5];
+    private Product[] productArr = new Product[5];
 
     public String getName(){
         return name;
@@ -29,7 +29,7 @@ public class Depot {
         for (int i = 0; i < productArr.length; i++) {
             if (productArr[i].getName() != null) {
                 if (productArr[i].getName().equals(n))
-                    return ("Product " + productArr[i].getName() + " exists in depot " + name + ", slot " + i + " of " + productArr.length);
+                    return ("Product " + productArr[i].getName() + " exists in depot " + name);
             }
         }
         return ("not found");
@@ -37,8 +37,10 @@ public class Depot {
 
     public void updateProductQuantity(String productNameInput, int q) {
         for (int i = 0; i < productArr.length; i++) {
-            if (productArr[i].getName().equals(productNameInput)) {
-                productArr[i].setQuantity(q);
+            if (productArr[i].getName() != null) {
+                if (productArr[i].getName().equals(productNameInput)) {
+                    productArr[i].setQuantity(q);
+                }
             }
         }
     }
@@ -85,6 +87,17 @@ public class Depot {
             }
         }
         return totalValue;
+    }
+
+    public String[] exportDepot() {
+        String[] depot = new String[5];
+        for (int i = 0; i < productArr.length; i++) {
+            if (productArr[i].getName() != null) {
+                depot[i] = name + " " + productArr[i].getName() + " " + productArr[i].getPrice() + " " +
+                        productArr[i].getWeight() + " " + productArr[i].getQuantity();
+            }
+        }
+        return depot;
     }
 
     public void setName(String sName){
