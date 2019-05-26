@@ -74,7 +74,6 @@ public class Depot {
                 productList[i] = "Product " + productArr[i].getName() + " has price " + productArr[i].getPrice() +
                         ", weight " + productArr[i].getWeight() + "KG, and quantity " + productArr[i].getQuantity();
             }
-
         }
         return productList;
     }

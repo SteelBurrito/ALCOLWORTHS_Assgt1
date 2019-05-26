@@ -1,6 +1,7 @@
 // Name: Antonio Kevin Christophorus
 // ID: 3201094
 
+import java.io.File;
 import java.util.*;
 import java.io.PrintWriter;
 import java.io.FileNotFoundException;
@@ -36,6 +37,7 @@ public class Interface {
         System.out.println("To search for a product in the depots, enter 7 \n");
         System.out.println("To sum up the values of all products inside a depot, enter 8 \n");
         System.out.println("To export the depot information, enter 9 \n");
+        System.out.println("To import the depot information (Ensure that the the imported filename is import.txt), enter 10 \n");
         System.out.println("To exit the program, press 0 \n");
         option = interfaceInput.nextInt();
         switch (option) {
@@ -67,6 +69,9 @@ public class Interface {
                 break;
             case 9:
                 exportDepotsArr();
+                break;
+            case 10:
+                importDepotData();
                 break;
             default:
                 System.out.println("Please enter a number from 0 to 8.\n");
@@ -248,8 +253,11 @@ public class Interface {
             if (depotArr[i].getName() != null) {
                 if (depotArr[i].getName().equals(depotNameInput)) {
                     String[] listOfProducts = depotArr[i].productDetail();
-                    if (listOfProducts[i] != null)
-                        System.out.println(listOfProducts[i] + "\n");
+                    for (int j = 0; j < listOfProducts.length; j++) {
+                        String product = listOfProducts[j];
+                        if (product != null)
+                            System.out.println(product + "\n");
+                    }
                     interfaceMenu();
                 }
             }
@@ -317,7 +325,7 @@ public class Interface {
                 String[] products = depotArr[i].exportDepot();
                 String line;
 
-//              if first index of array products is null, prints the depot name and move on to next iteration
+//              if first index of products array is null, prints the depot name and move on to next iteration
                 if (products[i] == null) {
                     line = depotArr[i].getName();
                     outputStream.println(line);
@@ -334,6 +342,100 @@ public class Interface {
         }
         outputStream.close();
         System.out.println("Depot data exported into " + fileName);
+        interfaceMenu();
+    }
+
+    private void importDepotData() {
+//      file import filename is import
+        String fileName = "import.txt";
+        Scanner inputStream = null;
+        try {
+            inputStream = new Scanner(new File(fileName));
+        } catch (FileNotFoundException e) {
+            System.out.println("Error opening the file " + fileName);
+            System.exit(0);
+        }
+
+        while (inputStream.hasNextLine()) {
+            String line = inputStream.nextLine();
+
+//          Split the string by space and putting it in an array
+//          regex source: https://stackoverflow.com/questions/7899525/how-to-split-a-string-by-space
+            String[] splittedLine = line.split("\\s+");
+
+//          add depot if imported depot does not exist
+            String depotNameInput = splittedLine[0];
+
+            for (int i = 0; i < depotArr.length; i++) {
+                boolean depotExists = false, depotSlotEmpty = false;
+                if (depotArr[i].getName() == null) {
+                    depotSlotEmpty = true;
+                    for (int y = 0; y < depotArr.length; y++) {
+                        if (depotArr[y].getName() != null && depotArr[y].getName().equals(depotNameInput)) {
+                            depotExists = true;
+                        }
+                    }
+                }
+                if (!depotExists && depotSlotEmpty) {
+                    depotArr[i].setName(depotNameInput);
+                }
+            }
+
+//          add product to depot if product is specified on the line by checking the array size of splittedLine
+            if (splittedLine.length > 1) {
+                String productName = splittedLine[1];
+
+//              check for existing product in depot array
+                for (int i = 0; i < depotArr.length; i++) {
+                    if (depotArr[i].getName() != null) {
+//                      depot found an existing product with the same name
+                        if (!depotArr[i].searchExistingProductArr(productName).equals("not found")) {
+                            System.out.println(depotArr[i].searchExistingProductArr(productName) + ", adding additional items.\n");
+
+                            int quantity = Integer.parseInt(splittedLine[4]);
+                            depotArr[i].updateProductQuantity(productName, quantity);
+                            System.out.println("Product " + productName + " updated. \n");
+                        }
+                    }
+                }
+
+//              insert new product on depot
+                for (int i = 0; i < depotArr.length; i++) {
+                    if (depotArr[i].getName() != null) {
+                        if (depotArr[i].getName().equals(depotNameInput)) {
+                            double price = Double.parseDouble(splittedLine[2]);
+                            double weight = Double.parseDouble(splittedLine[3]);
+                            int quantity = Integer.parseInt(splittedLine[4]);
+                            String output = depotArr[i].addProductArr(productName, price, weight, quantity);
+                            System.out.println(output);
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("File imported.");
+//      display the data inserted
+//        for (int i = 0; i < depotArr.length; i++){
+//            if (depotArr[i].getName() != null) {
+//                String[] products = depotArr[i].exportDepot();
+//                String line;
+//
+////              if first index of products array is null, prints the depot name and move on to next iteration
+//                if (products[i] == null) {
+//                    line = depotArr[i].getName();
+//                    System.out.println(line);
+//                    continue;
+//                }
+////              prints each item inside product array if the item is not empty
+//                for (String product : products) {
+//                    if (product != null) {
+//                        line = product;
+//                        System.out.println(line);
+//                    }
+//                }
+//            }
+//        }
+        inputStream.close();
         interfaceMenu();
     }
 }
