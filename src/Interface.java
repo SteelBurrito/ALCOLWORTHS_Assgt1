@@ -15,6 +15,7 @@ public class Interface {
     }
 
     private void run() {
+//      initializing the depot array when the code is first ran
         for (int i = 0; i < depotArr.length; i++) {
             depotArr[i] = new Depot();
             depotArr[i].initializeProductArr();
@@ -123,6 +124,9 @@ public class Interface {
     }
 
     private void addProductToDepotArr() {
+//      first checks if the product specified exists in the depots
+//      if it does, user will be asked for quantity of items to be added
+//      after product is checked, the user is then prompted to enter the product into the existing depots
         Scanner keyboard = new Scanner(System.in);
         String depotNameInput, productName, output;
         double price, weight;
@@ -253,6 +257,12 @@ public class Interface {
             if (depotArr[i].getName() != null) {
                 if (depotArr[i].getName().equals(depotNameInput)) {
                     String[] listOfProducts = depotArr[i].productDetail();
+
+                    if (listOfProducts[0] == null) {
+                        System.out.println("No products in depot " + depotArr[i].getName());
+                        interfaceMenu();
+                    }
+
                     for (int j = 0; j < listOfProducts.length; j++) {
                         String product = listOfProducts[j];
                         if (product != null)
@@ -325,8 +335,9 @@ public class Interface {
                 String[] products = depotArr[i].exportDepot();
                 String line;
 
-//              if first index of products array is null, prints the depot name and move on to next iteration
-                if (products[i] == null) {
+//              check if the string array returned by depot is empty by checking if the first index is null
+//              if its empty, will only print depot name and continue iterating through the depot array.
+                if (products[0] == null) {
                     line = depotArr[i].getName();
                     outputStream.println(line);
                     continue;
@@ -414,27 +425,6 @@ public class Interface {
             }
         }
         System.out.println("File imported.");
-//      display the data inserted
-//        for (int i = 0; i < depotArr.length; i++){
-//            if (depotArr[i].getName() != null) {
-//                String[] products = depotArr[i].exportDepot();
-//                String line;
-//
-////              if first index of products array is null, prints the depot name and move on to next iteration
-//                if (products[i] == null) {
-//                    line = depotArr[i].getName();
-//                    System.out.println(line);
-//                    continue;
-//                }
-////              prints each item inside product array if the item is not empty
-//                for (String product : products) {
-//                    if (product != null) {
-//                        line = product;
-//                        System.out.println(line);
-//                    }
-//                }
-//            }
-//        }
         inputStream.close();
         interfaceMenu();
     }

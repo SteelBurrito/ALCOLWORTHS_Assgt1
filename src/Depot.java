@@ -89,6 +89,7 @@ public class Depot {
     }
 
     public String[] exportDepot() {
+//      returns an empty string array if the depot has no product
         String[] depot = new String[5];
         for (int i = 0; i < productArr.length; i++) {
             if (productArr[i].getName() != null) {

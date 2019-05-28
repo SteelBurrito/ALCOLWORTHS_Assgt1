@@ -32,8 +32,6 @@ public class Product {
     }
 
     public void setQuantity (int Quantity) {
-        if (quantity == 0)
-            quantity = Quantity;
         quantity += Quantity;
     }
 
